@@ -6,31 +6,12 @@
 #include <QDebug>
 #include <QString>
 #include <QRegularExpression>
-
+int i=1;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     m_networkManager = new QNetworkAccessManager( this );
-
-    //order colection'nın altında 1,2 gibi document Id ler var. i variable bunun documenları okumak için var
-    int i = 1;
-
-    //i string'e dönüştürülüyor, dynamicPart değişkenine atanıyor
-    QString dynamicPart = QString::number(i);   //Document Id
-    qDebug() << "Dynamic part as QString:" << dynamicPart;
-
-    //Order'daki 1,2 gibi document id'nin url'i url değişkenine atanıyor
-    QString url = "https://roboserve-fd298-default-rtdb.firebaseio.com/Orders/" +dynamicPart+ ".json";    //Url
-    qDebug() << "Dynamic part as url:" << url;
-
-
-    // Construct the QUrl using the dynamic URL
-    QUrl dynamicUrl(url);
-
-    //request yapılıp sonra connection yapılıyor
-    m_networkReply = m_networkManager->get(QNetworkRequest(dynamicUrl));
-    connect(m_networkReply,&QNetworkReply::readyRead,this,&MainWindow::networkReplyReadyRead);
 
 
 
@@ -43,15 +24,37 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-
-    QString labelText = "Table Number: " + fromWhichTable + "\n"
-                        + "Order Id: " + orderId + "\n"
-                        + "Order List: " + orderList + "\n"
-                        + "Order Status: " + orderStatus + "\n"
-                        + "Price: " + price;
+    //order colection'nın altında 1,2 gibi document Id ler var. i variable bunun documenları okumak için var
 
 
-    ui->label->setText(labelText); // Set text of QLabel
+        //i string'e dönüştürülüyor, dynamicPart değişkenine atanıyor
+        QString dynamicPart = QString::number(i);   //Document Id
+        qDebug() << "Dynamic part as QString:" << dynamicPart;
+
+        //Order'daki 1,2 gibi document id'nin url'i url değişkenine atanıyor
+        QString url = "https://roboserve-fd298-default-rtdb.firebaseio.com/Orders/" +dynamicPart+ ".json";    //Url
+        qDebug() << "Dynamic part as url:" << url;
+
+
+        // Construct the QUrl using the dynamic URL
+        QUrl dynamicUrl(url);
+
+        //request yapılıp sonra connection yapılıyor
+        m_networkReply = m_networkManager->get(QNetworkRequest(dynamicUrl));
+        connect(m_networkReply,&QNetworkReply::readyRead,this,&MainWindow::networkReplyReadyRead);
+
+
+
+        QString labelText = "Table Number: " + fromWhichTable + "\n"
+                            + "Order Id: " + orderId + "\n"
+                            + "Order List: " + orderList + "\n"
+                            + "Order Status: " + orderStatus + "\n"
+                            + "Price: " + price;
+
+
+        ui->label->setText(labelText); // Set text of QLabel
+        i++;
+
 
 }
 
